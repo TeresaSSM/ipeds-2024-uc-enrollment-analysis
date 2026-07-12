@@ -1,0 +1,159 @@
+---
+title: "UCSD Academic Level and Demographics Benchmarking Report"
+author: "Teresa McCarrell, M.S."
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+This report examines the enrollment composition and demographic profile of the University of California, San Diego (UCSD), benchmarked against its peer campuses 
+within the University of California (UC) system. 
+
+This report answers four questions: (1) What is UCSD's academic structure, in terms of the balance between undergraduate and graduate enrollment?
+ (2) What is UCSD's demographic profile across racial, ethnic, and residency categories? (3) How does UCSD's academic structure compare to its UC peers?
+  (4) How does UCSD's demographic composition compare to the UC average, and what does that comparison suggest about demographic equity at the graduate and undergraduate levels? 
+Together, these questions situate UCSD's enrollment data within a system-wide context.
+
+## Data & Methods
+Data was drawn from the Integrated Postsecondary Education Data System (IPEDS), a federal database maintained by the U.S. Department of Education that collects 
+standardized enrollment, demographic, and institutional data from every postsecondary institution receiving federal financial aid funding. 
+Because IPEDS data is self-reported by institutions using consistent definitions, it supports reliable peer benchmarking across campuses.
+Data for this report reflects the most recent available year, 2024. The institutions within the UC system were selected as the peer group because its campuses are public institutions operating under the same statewide
+ governance structure and reporting standards, which allows for a meaningful comparison of enrollment and demographic data across campuses.
+UCSF was excluded from the peer group. As a graduate and professional only campus with no undergraduate program, it is not comparable in scope 
+to the other UC campuses and would distort rather than inform the benchmarking. For demographic reporting, Asian and Native Hawaiian/Pacific Islander 
+enrollment shares were combined into a single Asian American, Native Hawaiian and Pacific Islander (AANHPI) category, consistent with how these groups are commonly analyzed together in higher education reporting. 
+
+
+
+```{r, fig.width=7, fig.height=4, echo = FALSE}
+library(pacman)
+p_load(tidyverse, gt, rmarkdown, knitr)
+figs <- readRDS("C:\\Users\\teres\\Desktop\\Data work\\IPEDS report\\report_objects.rds")
+```
+
+## Results
+
+### Institutional profile (UCSD): What is UCSD’s academic structure?
+UCSD has a large undergraduate population, with 79% of students enrolled at the undergraduate level. The graduate student population is smaller, 
+with 21% of students enrolled in graduate programs. This distribution is consistent with the overall trend in higher education, where undergraduate
+ enrollment typically exceeds graduate enrollment.
+```{r, fig.cap="Fig 1. Undergraduates make up nearly 80% of UCSD's student body, more than triple the graduate share.", echo = FALSE}
+figs$ucsd_enrollment_pie
+
+figs$ucsd_percent_table%>%
+  gt() %>%
+  cols_label(Percent_Grad = "Graduate", Percent_Undergrad = "Undergraduate")%>%
+  tab_header(title = "Percentages of Students by Academic Level")  %>%
+  fmt(columns = where(is.numeric),
+    fns = function(x) paste0(round(x, 0), "%"))%>%
+  opt_stylize(style = 3)
+
+```
+ 
+
+### Institutional profile (UCSD):What is UCSD’s demographic profile?
+UCSD has a diverse student body, with a significant representation of AANHPI and Hispanic students at
+the undergraduate level (Fig 2). At the graduate level, near half (44%) of students are international ("nonresidents"),
+a much larger share than the undergraduate level. The decreased 
+proportion of US minorities at the graduate level suggests that UCSD graduate programs may need to consider strategies to encourage
+its enrollment and retention of these underrepresented groups.
+```{r, fig.width=8, fig.height=4, fig.cap="Fig 2. AANHPI and Hispanic students form the largest undergraduate groups at UCSD, while international students account for nearly half of graduate enrollment.", echo = FALSE}
+figs$ucsd_demographics
+```
+
+
+### Peer Comparison Benchmarking: Is UCSD’s academic structure unusual compared with peers? 
+UCSD is the third-largest UC campus by total enrollment, behind only UCLA and Berkeley (Fig. 3). Its graduate enrollment share (21%)
+ also ranks near the top of the UC system; higher than every peer campus except these two.
+```{r, fig.width=10, fig.height=4, fig.cap="Fig 3. UCSD is the third-largest UC campus by enrollment and has the third-highest graduate enrollment share, trailing only UCLA and Berkeley on both measures.", echo = FALSE}
+figs$uc_enrollment_fig
+```
+
+UCSD is highlighted in the above figure that breaks down the enrollment distribution by academic level for UC campuses. 
+The below table provides a ranked comparison of total enrollment across UC campuses, with UCSD positioned as the third largest institution
+ in terms of student population.
+
+```{r, fig.width=7, fig.height=4,  echo = FALSE}
+figs$ranked_enrollments %>%
+  mutate(Rank = row_number()) %>%
+  select(Rank, everything()) %>%
+  gt() %>%
+  cols_label(Total_Enrollment = "Total Enrollment")%>%
+  tab_header(title = "Ranked Enrollment Comparison by Institution") %>%
+  fmt_number(columns = where(is.numeric), decimals = 0)  %>%
+  opt_stylize(style = 3)
+```
+
+
+A more detailed breakdown of the undergraduate and graduate enrollment shares at each UC campus is provided in the table below.
+
+```{r, fig.width=7, fig.height=4, echo = FALSE}
+figs$enrollment_shares %>%
+  gt() %>%
+  cols_label(inst = "Institution",
+  Percent_Grad = "Graduate",
+  Percent_Undergrad = "Undergraduate") %>%
+  tab_header(title = "Graduate and Undergraduate Proportions At Each Institution") %>%
+  fmt(columns = where(is.numeric), fns = function(x) paste0(round(x, 0), "%")) %>%
+  opt_stylize(style = 3)
+```
+
+### Peer Comparison Benchmarking: Is UCSD's demographic profile unusual compared with its peers? 
+
+UCSD enrolls a higher share of international graduate students than the UC system as a whole (44% vs. 32% average), 
+suggesting an unusually strong international graduate draw (Fig. 5). At the same time, Hispanic students are underrepresented
+ at UCSD relative to the UC average at both the undergraduate level (27% vs. 31%) and, more sharply, the graduate level 
+ (9% vs. 15%) (Fig 4, Fig. 5). Lastly, Black students are the most underrepresented 
+  population within UCSD, comprising 2% of the student body at both the undergraduate and graduate levels (Fig 4, Fig. 5).  
+  This is a gap worth flagging for outreach and recruitment planning.
+
+```{r, fig.width=9, fig.height=7, fig.cap="Fig 4. UCSD's undergraduate AANHPI representation (35%) exceeds the UC average (30%), while Hispanic representation (27%) trails it (31%).", echo = FALSE}
+figs$uc_undergrad_demographics_fig
+```
+
+
+```{r, fig.width=9, fig.height=7, fig.cap="Fig 5. International students make up 44% of UCSD's graduate enrollment, versus 32% of the UC average, while Hispanic graduate representation is lower than the systemwide average (9% vs 15%).", echo = FALSE}
+figs$uc_graduate_demographics_fig
+```
+
+
+```{r, fig.width=9, fig.height=7, echo = FALSE}
+figs$undergrad_demographics_table%>%
+  gt() %>%
+  tab_header(title = "Undergraduate Demographics") %>%
+  cols_label(UC_Average = html("UC<br>Average")) %>%
+  fmt(columns = where(is.numeric), fns = function(x) paste0(round(x, 0), "%"))  %>%
+  opt_stylize(style = 3)
+
+figs$grad_demographics_table%>%
+  gt() %>%
+  cols_label(UC_Average = html("UC<br>Average")) %>%
+  tab_header(title = "Graduate Demographics") %>%
+  fmt(columns = where(is.numeric),fns = function(x) paste0(round(x, 0), "%"))  %>%
+  opt_stylize(style = 3)
+```
+
+## Conclusions & Recommendations
+UCSD's enrollment profile reveals both notable strengths and areas that merit institutional attention.
+UCSD's graduate program has established a strong international draw, with nonresident
+ students comprising 44% of graduate enrollment; well above the UC average of 32%. Leadership should treat 
+ this as a competitive asset: continued investment in international recruitment infrastructure and support 
+ services will help UCSD sustain this advantage among institutions competing for the same applicant pool.
+Hispanic students are underrepresented at UCSD relative to the UC average (27% vs. 31%), and the gap widens
+ sharply at the graduate level (9% vs. 15%). UCSD could prioritize 
+ targeted outreach and pipeline partnerships with Hispanic-Serving Institutions to close this graduate level gap. 
+ Black students are the least represented group across the UC system overall, with a systemwide average of 3%,
+  and UCSD's Black enrollment falls even lower at 2% at both the undergraduate and graduate levels. 
+  Unlike the international student gap, this reflects a systemwide pattern rather than a UCSD-specific one.
+  However, it still warrants inclusion in UCSD's recruitment strategy rather than being treated as solved
+   by broader system trends.
+Overall, these findings suggest UCSD's international graduate recruitment model is working and that the next 
+step is applying similar intentionality to domestic underrepresented groups.
