@@ -1,2 +1,3 @@
 # ipeds-2024-uc-enrollment-analysis
-Analysis of the demographics composition of enrollment in both graduate and undergraduate levels at University of California San Diego, benchmarked against UC insitutions.
+Analysis of the demographics composition of enrollment in both graduate and undergraduate levels at University of California, San Diego (UCSD), benchmarked against University of California (UC) insitutions system-wide. UCSD draws an unusually strong international graduate student population (44% of graduate enrollment vs. 32% UC-wide) but underrepresents Hispanic and Black students relative to UC system averages at both the undergraduate and graduate levels. This gap is most pronounced among Hispanic graduate students (9% at UCSD vs. 15% systemwide). The report recommends UCSD apply increased intentionality to closing domestic equity gaps. 
+The final report is available in both html and pdf formats.
