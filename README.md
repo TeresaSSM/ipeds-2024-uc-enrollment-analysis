@@ -22,8 +22,8 @@ R, R Markdown, tidyverse, openxlsx
 
 ## Files
 
-- `ipeds_analysis.R` — full analysis script
-- `IPEDS-report.Rmd` — report source
-- `IPEDS-report.html` — rendered report
-- `excel/IPEDS-project-excel-generation.r` — script generating the Excel deliverable
-- `excel/IPEDS_tables.xlsx` — formatted Excel output
+- `ipeds_analysis.R`: full analysis script
+- `IPEDS-report.Rmd`: report source
+- `IPEDS-report.html`: rendered report
+- `excel/IPEDS-project-excel-generation.r`: script generating the Excel deliverable
+- `excel/IPEDS_tables.xlsx`: formatted Excel output
